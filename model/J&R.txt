@@ -1,0 +1,10 @@
+ID,Type,Name,Pos,Pos2,Pos_c,cellId_e,cellId_r,color,e0,v0,rx,Hx,lamda,Cx,Noi_mean,Noi_std,eq1,eq2,lfp,PSP,FR,noise,linknoise_r,linkId_r,Hname,Tname,Cname,e0name,v0name,rname,meanname,stdname,sigmname,noisename,noisevarname,noisegainT,pulseName,ppsName
+0,-2,EXC,[-1296.0 -495.0],None,None,None,None,#ffaa00,5,6,0.56,3.25,100,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+1,-2,P,[-968.0 -445.0],None,None,None,None,#ff0000,5,6,0.56,3.25,100,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+2,-3,INH,[-1195.0 -248.0],None,None,None,None,#0000ff,5,6,0.56,22,50,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+3,-100,N,[-1094.0 -721.0],None,None,None,None,#878787,None,None,None,None,None,None,220,30,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+4,-200,N_to_P,[-1094.0 -721.0],[-968.0 -445.0],[-1031.0 -583.0],3,1,None,None,None,None,None,None,,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+5,-200,P_to_EXC,[-968.0 -445.0],[-1296.0 -495.0],[-1132.0 -470.0],1,0,None,None,None,None,None,None,135,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+6,-200,EXC_to_P,[-1296.0 -495.0],[-968.0 -445.0],[-1132.0 -470.0],0,1,None,None,None,None,None,None,108,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+7,-200,P_to_INH,[-968.0 -445.0],[-1195.0 -248.0],[-1081.5 -346.5],1,2,None,None,None,None,None,None,33.75,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+8,-200,INH_to_P,[-1195.0 -248.0],[-968.0 -445.0],[-1081.5 -346.5],2,1,None,None,None,None,None,None,33.75,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
