@@ -19,7 +19,7 @@ Set up conda environment by
     conda env create --file environment.yml
     conda activate EIREstimator
 
-Then,run the nmm generator by main_devided.py
+Then, run the nmm generator by main_devided.py
 
 Run the signal simulator by Signal_simulator.py
 
