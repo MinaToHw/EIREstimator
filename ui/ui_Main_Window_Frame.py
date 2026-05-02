@@ -233,4 +233,3 @@ class Ui_MainWindow(object):
         self.Undo_Button.setText(_translate("Form", "Undo"))
         self.New_Button.setText(_translate("Form", "New"))
         self.Add.setText(_translate("Form", "Add Item"))
-        self.real_time_loc.setText(_translate("Form", "0.00"))

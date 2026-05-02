@@ -442,25 +442,25 @@ class lfpViewer(QGraphicsView):
         # self.load_button.setEnabled(False)
 
 
-        self.axesPulses = self.figure.add_subplot(3, 1, 1)
-        self.axesPulses.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axesPulses.set_ylabel("Pulses (Hz)", fontsize=13, labelpad=5)
-        self.axesPulses.plot(self.parent.t, self.parent.lfp)
-        self.axesPulses.tick_params(axis='both', labelsize=13)
+        # self.axesPulses = self.figure.add_subplot(3, 1, 1)
+        # self.axesPulses.set_xlabel("Time (s)", fontsize=13, labelpad=2)
+        # self.axesPulses.set_ylabel("Pulses (Hz)", fontsize=13, labelpad=5)
+        # self.axesPulses.plot(self.parent.t, self.parent.lfp)
+        # self.axesPulses.tick_params(axis='both', labelsize=13)
 
-        self.axesPPS = self.figure.add_subplot(3, 1, 2, sharex=self.axesPulses)
-        self.axesPPS.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axesPPS.set_ylabel("PPS (mV)", fontsize=13, labelpad=5)
-        self.axesPPS.plot(self.parent.t, self.parent.lfp)
-        self.axesPPS.tick_params(axis='both', labelsize=13)
-
-        self.axes = self.figure.add_subplot(3, 1, 3, sharex=self.axesPulses)
+        self.axes = self.figure.add_subplot(2, 1, 1)
         self.axes.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axes.set_ylabel("LFP (mV)", fontsize=13, labelpad=5)
+        self.axes.set_ylabel("EEG (a.u.)", fontsize=13, labelpad=5)
         self.axes.plot(self.parent.t, self.parent.lfp)
         self.axes.tick_params(axis='both', labelsize=13)
 
-        self.figure.align_ylabels([self.axesPulses, self.axesPPS, self.axes])
+        self.axesPSD = self.figure.add_subplot(2, 1, 2)
+        self.axesPSD.set_xlabel("Frequency (Hz)", fontsize=13, labelpad=2)
+        self.axesPSD.set_ylabel("PSD (a.u.)", fontsize=13, labelpad=5)
+        self.axesPSD.plot(self.parent.t, self.parent.lfp)
+        self.axesPSD.tick_params(axis='both', labelsize=13)
+
+        self.figure.align_ylabels([self.axesPSD, self.axes])
 
         self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.toolbar.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
@@ -486,30 +486,23 @@ class lfpViewer(QGraphicsView):
         lfp= lfp[:-2,:]
         pulse = pulse[:-2,:]
         pps = pps[:-2,:]
+        freqs, ps_vPN = signal.welch(lfp[:, 0], fs=256, noverlap=256, nperseg=512)
 
         self.axes.clear()
         self.axes.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axes.set_ylabel("lfp (mV)", fontsize=13, labelpad=5)
+        self.axes.set_ylabel("EEG (a.u.)", fontsize=13, labelpad=5)
         for s in range(len(self.parent.LFP_Name)):
-            self.axes.plot(tp,lfp[:,s],self.parent.LFP_color[s])
-        self.axes.legend(self.parent.LFP_Name, loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
+            self.axes.plot(tp, lfp[:, s], self.parent.LFP_color[s])
+        # self.axes.legend(self.parent.LFP_Name, loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
         self.axes.tick_params(axis='both', labelsize=13)
 
-        self.axesPulses.clear()
-        self.axesPulses.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axesPulses.set_ylabel("Pulses (Hz)", fontsize=13, labelpad=5)
-        for s in range(len(self.parent.Pulses_Names)):
-            self.axesPulses.plot(tp,pulse[:,s],self.parent.sig_color[s])
-        self.axesPulses.legend(self.parent.Pulses_Names, loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
-        self.axesPulses.tick_params(axis='both', labelsize=13)
+        self.axesPSD.clear()
+        self.axesPSD.set_xlabel("Frequency (Hz)", fontsize=13, labelpad=2)
+        self.axesPSD.set_ylabel("PSD (a.u.)", fontsize=13, labelpad=5)
 
-        self.axesPPS.clear()
-        self.axesPPS.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axesPPS.set_ylabel("PPS (mV)", fontsize=13, labelpad=5)
-        for s in range(len(self.parent.PPS_Names)):
-            self.axesPPS.plot(tp,pps[:,s],self.parent.sig_color[s])
-        self.axesPPS.legend(self.parent.PPS_Names, loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
-        self.axesPPS.tick_params(axis='both', labelsize=13)
+        self.axesPSD.plot(freqs[:100], ps_vPN[:100], color='blue')
+        # self.axesPSD.legend(self.parent.PPS_Names, loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
+        self.axesPSD.tick_params(axis='both', labelsize=13)
 
         self.canvas.draw_idle()
 

@@ -133,16 +133,16 @@ class EnKF_Window(QtWidgets.QWidget, Ui_EnKFWindow):
                 self.listofedit[i][1].setAlignment(Qt.AlignCenter)
                 self.listofedit[i][1].setFont(QFont("Georgia", 9))
                 self.listofedit[i][1].setFixedHeight(30)
-                self.listofedit[i][1].setFixedWidth(120)
+                self.listofedit[i][1].setFixedWidth(80)
 
                 self.listofedit[i][2].setFixedHeight(30)
-                self.listofedit[i][2].setFixedWidth(60)
+                self.listofedit[i][2].setFixedWidth(40)
 
                 self.listofedit[i][3].setFixedHeight(30)
-                self.listofedit[i][3].setFixedWidth(60)
+                self.listofedit[i][3].setFixedWidth(40)
 
                 self.listofedit[i][4].setFixedHeight(30)
-                self.listofedit[i][4].setFixedWidth(60)
+                self.listofedit[i][4].setFixedWidth(40)
 
                 grid2.addWidget(self.listofedit[i][0], i + 1, 0)
                 grid2.addWidget(self.listofedit[i][1], i + 1, 1)
@@ -162,14 +162,14 @@ class EnKF_Window(QtWidgets.QWidget, Ui_EnKFWindow):
 
         grid3 = QGridLayout()
         grid3.setHorizontalSpacing(5)
-        grid3.setVerticalSpacing(10)
+        grid3.setVerticalSpacing(15)
         self.Algo_Para_Label = QLabel('Name')
         self.Algo_Para_Label.setAlignment(Qt.AlignCenter)
-        self.Algo_Para_Label.setFont(QFont("Georgia", 10))
+        self.Algo_Para_Label.setFont(QFont("Georgia", 13))
 
         self.Algo_Para_Val = QLabel('Value')
         self.Algo_Para_Val.setAlignment(Qt.AlignCenter)
-        self.Algo_Para_Val.setFont(QFont("Georgia", 10))
+        self.Algo_Para_Val.setFont(QFont("Georgia", 13))
 
         grid3.addWidget(self.Algo_Para_Label, 0, 0)
         grid3.addWidget(self.Algo_Para_Val, 0, 1)
@@ -183,7 +183,7 @@ class EnKF_Window(QtWidgets.QWidget, Ui_EnKFWindow):
             label.setAlignment(Qt.AlignCenter)
             self.listofedit_EnKF.append([label, enkf_param_value])
 
-            self.listofedit_EnKF[i][0].setFont(QFont("Georgia", 9))
+            self.listofedit_EnKF[i][0].setFont(QFont("Georgia", 12))
             self.listofedit_EnKF[i][0].setFixedHeight(30)
             self.listofedit_EnKF[i][0].setFixedWidth(150)
 
@@ -250,7 +250,7 @@ class EnKF_Window(QtWidgets.QWidget, Ui_EnKFWindow):
         if fileName[0] == '':
             return
         if fileName[1] == 'csv (*.csv)':
-            with (open(fileName[0], mode='r') as csv_file):
+            with open(fileName[0], mode='r') as csv_file:
                 self.reader = csv.DictReader(csv_file)
                 self.fieldnames = self.reader.fieldnames
 
@@ -352,11 +352,11 @@ class EnKF_Window(QtWidgets.QWidget, Ui_EnKFWindow):
                 self.EnKF_Signal_Window.updatestate(t, eeg_pred, x_pred, fs)
                 QtWidgets.QApplication.processEvents()
 
-        end_real_time = time.time()
-        elapsed_time = end_real_time - start_real_time
-        time_text = f'\n算法运行完成，总耗时: {elapsed_time:.2f} 秒'
-        self.textBrowser.append(time_text)
-        print(f"PSO算法运行时间: {elapsed_time:.2f} 秒")
+        # end_real_time = time.time()
+        # elapsed_time = end_real_time - start_real_time
+        # time_text = f'\n算法运行完成，总耗时: {elapsed_time:.2f} 秒'
+        # self.textBrowser.append(time_text)
+        # print(f"算法运行时间: {elapsed_time:.2f} 秒")
 
         return
 
@@ -812,33 +812,33 @@ class EnKF_SignalWindow(QGraphicsView):
 
         self.figure.subplots_adjust(top=0.98, bottom=0.06, left=0.12, right=0.98, hspace=0.4, wspace=0.1)
         self.axes = self.figure.add_subplot(4, 1, 1)
-        self.axes.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axes.set_ylabel("Signal (a.u.)", fontsize=13, labelpad=5)
-        self.axes.tick_params(axis='both', labelsize=13)
+        self.axes.set_xlabel("Time (s)", fontsize=14, labelpad=1)
+        self.axes.set_ylabel("EEG (a.u.)", fontsize=14, labelpad=5)
+        self.axes.tick_params(axis='both', labelsize=14)
 
         self.axesEXC = self.figure.add_subplot(4, 1, 2, sharex=self.axes)
-        self.axesEXC.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axesEXC.set_ylabel("EXC", fontsize=13, labelpad=5)
-        self.axesEXC.tick_params(axis='both', labelsize=13)
+        self.axesEXC.set_xlabel("Time (s)", fontsize=14, labelpad=2)
+        self.axesEXC.set_ylabel("EXC", fontsize=14, labelpad=5)
+        self.axesEXC.tick_params(axis='both', labelsize=14)
 
         self.axesINH = self.figure.add_subplot(4, 1, 3, sharex=self.axes)
-        self.axesINH.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axesINH.set_ylabel("INH", fontsize=13, labelpad=5)
-        self.axesINH.tick_params(axis='both', labelsize=13)
+        self.axesINH.set_xlabel("Time (s)", fontsize=14, labelpad=2)
+        self.axesINH.set_ylabel("INH", fontsize=14, labelpad=5)
+        self.axesINH.tick_params(axis='both', labelsize=14)
 
         self.axesEIR = self.figure.add_subplot(4, 1, 4, sharex=self.axes)
-        self.axesEIR.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axesEIR.set_ylabel("EIR", fontsize=13, labelpad=5)
-        self.axesEIR.tick_params(axis='both', labelsize=13)
+        self.axesEIR.set_xlabel("Time (s)", fontsize=14, labelpad=1)
+        self.axesEIR.set_ylabel("EIR", fontsize=14, labelpad=5)
+        self.axesEIR.tick_params(axis='both', labelsize=14)
         self.figure.align_ylabels([self.axesEXC, self.axesINH, self.axes, self.axesEIR])
 
     def updatesignal(self, t, signal):
         self.axes.clear()
-        self.axes.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axes.set_ylabel("lfp (a.u.)", fontsize=13, labelpad=5)
-        self.axes.plot(t, signal, label="Target Signal", color="black", alpha=0.4)
-        self.axes.tick_params(axis='both', labelsize=13)
-        self.axes.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
+        self.axes.set_xlabel("Time (s)", fontsize=14, labelpad=1)
+        self.axes.set_ylabel("EEG (a.u.)", fontsize=14, labelpad=5)
+        self.axes.plot(t, signal, label="Original", color="black", alpha=0.4)
+        self.axes.tick_params(axis='both', labelsize=14)
+        self.axes.legend(loc='upper right', fontsize=12, fancybox=False, framealpha=0.8)
         self.canvas.draw_idle()
 
     def updatestate(self, nt, eeg, state, fs):
@@ -858,14 +858,14 @@ class EnKF_SignalWindow(QGraphicsView):
         if fit_data_line is not None:
             fit_data_line.set_data(t[1:nt], fit_data)
         else:
-            self.axes.plot(t[1:nt], fit_data, label="fit_data", color="red")
-        self.axes.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
+            self.axes.plot(t[1:nt], fit_data, label="Simulated", color="red")
+        self.axes.legend(loc='upper right', fontsize=12, fancybox=False, framealpha=0.5)
 
         if not hasattr(self, 'plot_EXC_line'):
             self.plot_EXC_line, = self.axesEXC.plot(t[1:nt], plot_EXC, label="EXC", color="red")
         else:
             self.plot_EXC_line.set_data(t[1:nt], plot_EXC)
-        self.axesEXC.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
+        # self.axesEXC.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.5)
         self.axesEXC.relim()
         self.axesEXC.autoscale_view(scalex=False)
 
@@ -873,7 +873,7 @@ class EnKF_SignalWindow(QGraphicsView):
             self.plot_INH_line, = self.axesINH.plot(t[1:nt], plot_INH, label="INH", color="blue")
         else:
             self.plot_INH_line.set_data(t[1:nt], plot_INH)
-        self.axesINH.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
+        # self.axesINH.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.5)
         self.axesINH.relim()
         self.axesINH.autoscale_view(scalex=False)
 
@@ -881,7 +881,7 @@ class EnKF_SignalWindow(QGraphicsView):
             self.plot_EIR_line, = self.axesEIR.plot(t[1:nt], plot_EIR, label="EIR", color="purple")
         else:
             self.plot_EIR_line.set_data(t[1:nt], plot_EIR)
-        self.axesEIR.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
+        # self.axesEIR.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.5)
         self.axesEIR.relim()
         self.axesEIR.autoscale_view(scalex=False)
 

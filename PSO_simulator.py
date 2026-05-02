@@ -269,7 +269,7 @@ class PSO_Window(QtWidgets.QWidget, Ui_PSOWindow):
         if fileName[0] == '':
             return
         if fileName[1] == 'csv (*.csv)':
-            with (open(fileName[0], mode='r') as csv_file):
+            with open(fileName[0], mode='r') as csv_file:
                 self.reader = csv.DictReader(csv_file)
                 self.fieldnames = self.reader.fieldnames
                 self.loaded_data_format = 'csv'
@@ -454,12 +454,13 @@ class PSO_Window(QtWidgets.QWidget, Ui_PSOWindow):
             print('The best parameter set is ' + str(swarm[gbest, 2, :]))
             print('whose cost is ' + str(vbest) + '\n')
 
-            if prev_vbest - vbest < vbest / 100:
-                stuck += 1
-            else:
-                stuck = 0
-
-            if stuck > 25:
+            # if prev_vbest - vbest < vbest / 100:
+            #     stuck += 1
+            # else:
+            #     stuck = 0
+            #
+            # if stuck > 25:
+            if count > 50:
                 text = (f"Parameter reconstruction for count {count}\n"
                         f"The best particle is {gbest}\n"
                         f"The best parameter set is {swarm[gbest, 2, :]}\n"
@@ -806,16 +807,16 @@ class SignalWindow(QGraphicsView):
         self.setLayout(layout)
 
         self.axes = self.figure.add_subplot(1, 1, 1)
-        self.axes.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axes.set_ylabel("Signal (a.u.)", fontsize=13, labelpad=5)
-        self.axes.tick_params(axis='both', labelsize=13)
+        self.axes.set_xlabel("Time (s)", fontsize=14, labelpad=2)
+        self.axes.set_ylabel("Signal (a.u.)", fontsize=14, labelpad=5)
+        self.axes.tick_params(axis='both', labelsize=14)
 
     def updatelfp(self):
         self.axes.clear()
-        self.axes.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axes.set_ylabel("Signal (a.u.)", fontsize=13, labelpad=5)
+        self.axes.set_xlabel("Time (s)", fontsize=14, labelpad=2)
+        self.axes.set_ylabel("Signal (a.u.)", fontsize=14, labelpad=5)
         self.axes.plot(self.parent.t, self.parent.signal)
-        self.axes.tick_params(axis='both', labelsize=13)
+        self.axes.tick_params(axis='both', labelsize=14)
         self.canvas.draw()
 
 
@@ -847,33 +848,33 @@ class PSO_SignalWindow(QGraphicsView):
 
         self.figure.subplots_adjust(top=0.98, bottom=0.06, left=0.12, right=0.98, hspace=0.4, wspace=0.1)
         self.axes = self.figure.add_subplot(4, 1, 1)
-        self.axes.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axes.set_ylabel("Signal (a.u.)", fontsize=13, labelpad=5)
-        self.axes.tick_params(axis='both', labelsize=13)
+        self.axes.set_xlabel("Time (s)", fontsize=14, labelpad=1)
+        self.axes.set_ylabel("Signal (a.u.)", fontsize=14, labelpad=5)
+        self.axes.tick_params(axis='both', labelsize=14)
 
         self.axesEXC = self.figure.add_subplot(4, 1, 2, sharex=self.axes)
-        self.axesEXC.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axesEXC.set_ylabel("EXC", fontsize=13, labelpad=5)
-        self.axesEXC.tick_params(axis='both', labelsize=13)
+        self.axesEXC.set_xlabel("Time (s)", fontsize=14, labelpad=1)
+        self.axesEXC.set_ylabel("EXC", fontsize=14, labelpad=5)
+        self.axesEXC.tick_params(axis='both', labelsize=14)
 
         self.axesINH = self.figure.add_subplot(4, 1, 3, sharex=self.axes)
-        self.axesINH.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axesINH.set_ylabel("INH", fontsize=13, labelpad=5)
-        self.axesINH.tick_params(axis='both', labelsize=13)
+        self.axesINH.set_xlabel("Time (s)", fontsize=14, labelpad=1)
+        self.axesINH.set_ylabel("INH", fontsize=14, labelpad=5)
+        self.axesINH.tick_params(axis='both', labelsize=14)
 
         self.axesEIR = self.figure.add_subplot(4, 1, 4, sharex=self.axes)
-        self.axesEIR.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axesEIR.set_ylabel("EIR", fontsize=13, labelpad=5)
-        self.axesEIR.tick_params(axis='both', labelsize=13)
+        self.axesEIR.set_xlabel("Time (s)", fontsize=14, labelpad=1)
+        self.axesEIR.set_ylabel("EIR", fontsize=14, labelpad=5)
+        self.axesEIR.tick_params(axis='both', labelsize=14)
         self.figure.align_ylabels([self.axesEXC, self.axesINH, self.axes, self.axesEIR])
 
     def updatesignal(self, t, signal):
         self.axes.clear()
-        self.axes.set_xlabel("Time (s)", fontsize=13, labelpad=2)
-        self.axes.set_ylabel("lfp (a.u.)", fontsize=13, labelpad=5)
+        self.axes.set_xlabel("Time (s)", fontsize=14, labelpad=2)
+        self.axes.set_ylabel("lfp (a.u.)", fontsize=14, labelpad=5)
         self.axes.plot(t, signal, label="Target Signal", color="black", alpha=0.4)
-        self.axes.tick_params(axis='both', labelsize=13)
-        self.axes.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
+        self.axes.tick_params(axis='both', labelsize=14)
+        self.axes.legend(loc='upper right', fontsize=12, fancybox=False, framealpha=0.8)
         self.canvas.draw_idle()
 
     def updatestate(self, target_time, state, fs, exp_data):
@@ -933,7 +934,7 @@ class PSO_SignalWindow(QGraphicsView):
             new_x = np.concatenate([existing_x, t])
             new_y = np.concatenate([existing_y, plot_EXC])
             self.plot_EXC_line.set_data(new_x, new_y)
-        self.axesEXC.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
+        # self.axesEXC.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
         self.axesEXC.relim()
         self.axesEXC.autoscale_view(scalex=False)
 
@@ -944,7 +945,7 @@ class PSO_SignalWindow(QGraphicsView):
             new_x = np.concatenate([existing_x, t])
             new_y = np.concatenate([existing_y, plot_INH])
             self.plot_INH_line.set_data(new_x, new_y)
-        self.axesINH.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
+        # self.axesINH.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
         self.axesINH.relim()
         self.axesINH.autoscale_view(scalex=False)
 
@@ -955,7 +956,7 @@ class PSO_SignalWindow(QGraphicsView):
             new_x = np.concatenate([existing_x, t])
             new_y = np.concatenate([existing_y, plot_EIR])
             self.plot_EIR_line.set_data(new_x, new_y)
-        self.axesEIR.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
+        # self.axesEIR.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
         self.axesEIR.relim()
         self.axesEIR.autoscale_view(scalex=False)
 

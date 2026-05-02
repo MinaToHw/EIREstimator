@@ -28,6 +28,11 @@ class Main_Window(QtWidgets.QWidget, Ui_MainWindow):
         super(Main_Window, self).__init__()
         self.setupUi(self)
 
+        if platform.system() == 'Darwin':
+            self.facteurzoom = 1.05
+        else:
+            self.facteurzoom = 1.25
+
         self.photo_viewer = PhotoViewer(self)
         row_start, col_start, row_span, col_span = self.gridLayout.getItemPosition(self.gridLayout.indexOf(self.PhotoViewer))
         self.gridLayout.removeWidget(self.PhotoViewer)
@@ -837,7 +842,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
                 if self.linkattente == False:
                     self.linkattente = True
                     self.position1 = QPointF(event.pos())
-                    self.position1 = self.mapToScene(self.position1.x(), self.position1.y())
+                    self.position1 = self.mapToScene(int(self.position1.x()), int(self.position1.y()))
                     self.cellId_e = -1
                     self.cellName_e = ''
                     length = np.inf
@@ -866,7 +871,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
                 elif self.linkattente == True:
                     self.linkattente = False
                     position2 = QPointF(event.pos())
-                    position2 = self.mapToScene(position2.x(), position2.y())
+                    position2 = self.mapToScene(int(position2.x()), int(position2.y()))
                     cellId_r = -1
                     cellName_r = ''
                     length = np.inf
