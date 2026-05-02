@@ -8,7 +8,7 @@ import types
 import copy
 import numpy as np
 import matplotlib as mpl
-from scipy.signal import decimate, firwin, filtfilt
+from scipy.signal import decimate, firwin, filtfilt, welch
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -499,10 +499,16 @@ class PSO_Window(QtWidgets.QWidget, Ui_PSOWindow):
             exp_output_rmean = (exp_output - mean_LFP).reshape(-1, 1)
             normalized_model_output = normalize_min_max(model_output_rmean, np.min(exp_output_rmean), np.max(exp_output_rmean))
 
+            freqs, vPN_Jansen = welch(normalized_model_output.flatten(), self.Fs, nperseg=64)
+            freqs_xx, vPN_Jansen_xx = welch(exp_output_rmean.flatten(), self.Fs, nperseg=64)
+            new_vPN_Jansen_xx, scaled_factor = normalize_min_max_new(vPN_Jansen_xx.flatten(), 0, 1)
+            new_vPN_Jansen = vPN_Jansen * scaled_factor
+
             cost_1 = zncc(normalized_model_output, exp_output_rmean)
             cost_2 = np.sqrt(np.sum((exp_output_rmean - normalized_model_output) ** 2)/len(exp_output_rmean))
+            cost_3 = np.sqrt(np.sum((new_vPN_Jansen_xx - new_vPN_Jansen) ** 2))
 
-            cost = (1 - cost_1) + 2 * cost_2
+            cost = (1 - cost_1) + cost_2 + cost_3
         return cost
 
     def SaveResult(self):
@@ -871,7 +877,7 @@ class PSO_SignalWindow(QGraphicsView):
     def updatesignal(self, t, signal):
         self.axes.clear()
         self.axes.set_xlabel("Time (s)", fontsize=14, labelpad=2)
-        self.axes.set_ylabel("lfp (a.u.)", fontsize=14, labelpad=5)
+        self.axes.set_ylabel("EEG (a.u.)", fontsize=14, labelpad=5)
         self.axes.plot(t, signal, label="Target Signal", color="black", alpha=0.4)
         self.axes.tick_params(axis='both', labelsize=14)
         self.axes.legend(loc='upper right', fontsize=12, fancybox=False, framealpha=0.8)
@@ -915,7 +921,7 @@ class PSO_SignalWindow(QGraphicsView):
 
         fit_data_line = None
         for line in self.axes.get_lines():
-            if line.get_label() == "fit_data":
+            if line.get_label() == "Simulated":
                 fit_data_line = line
                 break
         if fit_data_line is not None:
@@ -924,8 +930,8 @@ class PSO_SignalWindow(QGraphicsView):
             new_y = np.concatenate([existing_y, normalized_model_output.flatten()])
             fit_data_line.set_data(new_x, new_y)
         else:
-            self.axes.plot(t, normalized_model_output, label="fit_data", color="red")
-        self.axes.legend(loc='upper right', fontsize=10, fancybox=False, framealpha=0.8)
+            self.axes.plot(t, normalized_model_output, label="Simulated", color="red")
+        self.axes.legend(loc='upper right', fontsize=12, fancybox=False, framealpha=0.8)
 
         if not hasattr(self, 'plot_EXC_line'):
             self.plot_EXC_line, = self.axesEXC.plot(t, plot_EXC, label="EXC", color="red")
@@ -994,6 +1000,18 @@ def normalize_min_max(data, new_min, new_max):
     else:
         data_scaled = data_centered  # 如果全部数据 <=0，无需缩放
     return data_scaled
+
+
+def normalize_min_max_new(data, new_min, new_max):
+    data_centered = data - np.mean(data)
+    if np.max(data_centered) > 0:  # 避免除以0
+        new_scale_factor = new_max / np.max(data_centered)
+        data_scaled_2 = data_centered * new_scale_factor
+    else:
+        data_scaled_2 = data_centered  # 如果全部数据 <=0，无需缩放
+        new_scale_factor = 1.0
+
+    return data_scaled_2, new_scale_factor
 
 
 def zncc(signal1, signal2):
