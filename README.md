@@ -17,7 +17,7 @@ We recommend using Anaconda to deploy the Python environment for EIREstimator.
 Set up conda environment by
 
     conda env create --file environment.yml
-    conda activate EIREstimator
+    conda activate EIREstimator_2026
 
 Then, run the nmm generator by main_devided.py
 
