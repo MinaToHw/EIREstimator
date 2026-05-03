@@ -23,4 +23,8 @@ Then, run the nmm generator by main_devided.py
 
 Run the signal simulator by Signal_simulator.py
 
-Run the estimator by vbEnKF_simulator.py or PSO_simulator.py
+Run the estimator by vbcEnKF_simulator.py or PSO_simulator.py
+
+Train the network by Network_trainer.py
+
+Deploy the network by Network_tester.py
